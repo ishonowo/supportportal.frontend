@@ -65,6 +65,18 @@ export class AuthenticationService {
   }
 
   public isUserLoggedIn(): boolean {
-    return;
+    this.loadToken();
+    if (this.token != null && this.token !== "") {
+      if (
+        (this.jwtHelper.decodeToken(this.token).sub != null || "") &&
+        !this.jwtHelper.isTokenExpired(this.token)
+      ) {
+        this.loggedInUsername = this.jwtHelper.decodeToken(this.token).sub;
+        return true;
+      }
+    } else {
+      this.logOut();
+      return false;
+    }
   }
 }
