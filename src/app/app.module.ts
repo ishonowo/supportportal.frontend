@@ -7,11 +7,13 @@ import { AppComponent } from "./app.component";
 import { AuthenticationService } from "./service/authentication.service";
 import { UserService } from "./service/user.service";
 import { AuthInterceptorService } from "./interceptor/auth.interceptor.service";
+import { AuthenticationGuard } from "./guard/authentication.guard";
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [
+    AuthenticationGuard,
     AuthenticationService,
     UserService,
     {
