@@ -7,7 +7,9 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from "@angular/router";
+import { NotificationType } from "../enum/notification.type.enum";
 import { AuthenticationService } from "../service/authentication.service";
+import { NotificationService } from "../service/notification.service";
 
 @Injectable({
   providedIn: "root",
@@ -15,7 +17,8 @@ import { AuthenticationService } from "../service/authentication.service";
 export class AuthenticationGuard implements CanActivate {
   constructor(
     private authService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private notifyService: NotificationService
   ) {}
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -29,7 +32,10 @@ export class AuthenticationGuard implements CanActivate {
       return true;
     } else {
       this.router.navigate(["/login"]);
-      //notify user
+      this.notifyService.notify(
+        NotificationType.ERROR,
+        "Kindly login to access this page.".toUpperCase()
+      );
       return false;
     }
   }

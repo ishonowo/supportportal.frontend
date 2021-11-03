@@ -8,11 +8,22 @@ import { AuthenticationService } from "./service/authentication.service";
 import { UserService } from "./service/user.service";
 import { AuthInterceptorService } from "./interceptor/auth.interceptor.service";
 import { AuthenticationGuard } from "./guard/authentication.guard";
+import { NotificationModule } from "./notification.module";
+import { NotificationService } from "./service/notification.service";
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  declarations: [AppComponent, LoginComponent, RegisterComponent, UserComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    NotificationModule,
+  ],
   providers: [
+    NotificationService,
     AuthenticationGuard,
     AuthenticationService,
     UserService,
