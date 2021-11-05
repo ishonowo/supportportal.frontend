@@ -20,11 +20,14 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) {}
 
-  public login(user: User): Observable<HttpResponse<any> | HttpErrorResponse> {
-    return this.http.post<HttpResponse<any> | HttpErrorResponse>(
+  public login(user: User): Observable<HttpResponse<User | HttpErrorResponse>> {
+    const headers = { "content-type": "application/json" };
+    return this.http.post<User | HttpErrorResponse>(
       `${this.host}/user/login`,
       user,
-      { observe: "response" }
+      {
+        observe: "response",
+      }
     );
   }
 
@@ -67,13 +70,11 @@ export class AuthenticationService {
   public isUserLoggedIn(): boolean {
     this.loadToken();
     if (this.token != null && this.token !== "") {
-      if (
-        this.jwtHelper.decodeToken(this.token).sub != null ||
-        "" ||
-        !this.jwtHelper.isTokenExpired(this.token)
-      ) {
-        this.loggedInUsername = this.jwtHelper.decodeToken(this.token).sub;
-        return true;
+      if (this.jwtHelper.decodeToken(this.token).sub != null || "") {
+        if (!this.jwtHelper.isTokenExpired(this.token)) {
+          this.loggedInUsername = this.jwtHelper.decodeToken(this.token).sub;
+          return true;
+        }
       }
     } else {
       this.logOut();
