@@ -2,11 +2,14 @@ import { Injectable } from "@angular/core";
 import {
   HttpClient,
   HttpErrorResponse,
+  HttpHeaders,
   HttpResponse,
 } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { Observable } from "rxjs";
 import { User } from "../model/user";
+import { map } from "rxjs/operators";
+
 import { JwtHelperService } from "@auth0/angular-jwt";
 
 @Injectable({
@@ -20,15 +23,10 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) {}
 
-  public login(user: User): Observable<HttpResponse<User | HttpErrorResponse>> {
-    const headers = { "content-type": "application/json" };
-    return this.http.post<User | HttpErrorResponse>(
-      `${this.host}/user/login`,
-      user,
-      {
-        observe: "response",
-      }
-    );
+  public login(user: User): Observable<HttpResponse<User>> {
+    return this.http.post<User>(`${this.host}/user/login`, user, {
+      observe: "response",
+    });
   }
 
   public register(user: User): Observable<User | HttpErrorResponse> {

@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.authService.login(user).subscribe(
         (response: HttpResponse<User>) => {
+          console.log(response);
           const token = response.headers.get(HeaderType.JWT_TOKEN);
           this.authService.saveToken(token);
           this.authService.addUserToLocalCache(response.body);
